@@ -4,7 +4,7 @@ A GenAI-powered planning assistant that helps people organize **weddings, birthd
 
 Built for **PromptWars Virtual** (Hack2skill x Google for Developers).
 
-> Live demo: https://celebration-event-planner.onrender.com | Demo video: `<add video link>`
+> Live demo: https://celebration-event-planner.onrender.com 
 
 ---
 
@@ -169,12 +169,6 @@ tests/           all unit, component, integration and server tests
 .github/workflows/tests.yml
 eslint.config.js, .prettierrc, .editorconfig, .env.example
 ```
-
-## 10. Screenshots
-
-<!-- Add 2-3 small screenshots here (under 1 MB total), e.g.
-![Dashboard](docs/dashboard.png)
--->
 
 ## License
 
