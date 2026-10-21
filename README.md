@@ -151,11 +151,16 @@ Test suites cover: budget splits (sum to 100, exact totals, edge cases), timelin
 
 ```
 src/
-  main.tsx, App.tsx, config.ts, types.ts
+  main.tsx, App.tsx, config.ts, types.ts, defaultPlan.ts
+  hooks/         useDisplayPreferences, usePlanDerivations, useChecklistProgress,
+                 useIdeas, useEventForm
   planner/       budget, timeline, vendors, validation, chatIntent,
                  healthScore, scenarios, spendTracker, ics
+  planner/timeline/  phases, dayOfSchedule, postEvent
+  constants/     budgetSplits, currency, presets, weddingFunctions
   ai/            gemini.ts (timeout, retry, cache), fallback.ts (offline ideas)
-  components/    form, budget, timeline, vendor checklist, ideas, chat, etc.
+  components/    header, footer, dashboard, budget, timeline, vendor checklist, ideas, chat
+  components/form/  FormField, PriorityChips, IndianFunctionChips, PresetBar
   styles/        app.css
 server/
   index.ts       entry point (Vite middleware in dev, static files in production)
