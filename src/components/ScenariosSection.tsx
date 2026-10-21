@@ -5,8 +5,8 @@
  */
 
 import React, { useState } from 'react';
-import { Check, CloudRain, Layers, ShieldAlert, Sparkles, TrendingUp } from 'lucide-react';
-import { CurrencyCode, EventPlanInput, PlanScenario } from '../types.ts';
+import { Check, CloudRain, TrendingUp } from 'lucide-react';
+import { CurrencyCode, EventPlanInput } from '../types.ts';
 import { calculatePlanScenarios, generateWeatherBackupPlan } from '../planner/scenarios.ts';
 import { formatCurrency } from '../config.ts';
 
@@ -52,7 +52,8 @@ export const ScenariosSection: React.FC<ScenariosSectionProps> = ({
             Budget Scenarios: Lean vs Standard vs Premium
           </h2>
           <p className="card-subtitle">
-            Deterministic model comparisons evaluating trade-offs across tier levels for {currentPlan.guestCount} guests.
+            Deterministic model comparisons evaluating trade-offs across tier levels for{' '}
+            {currentPlan.guestCount} guests.
           </p>
         </div>
       </div>
@@ -83,9 +84,12 @@ export const ScenariosSection: React.FC<ScenariosSectionProps> = ({
               </div>
 
               <div className="scenario-price-box">
-                <span className="scenario-amount">{formatCurrency(scenario.totalBudget, currency)}</span>
+                <span className="scenario-amount">
+                  {formatCurrency(scenario.totalBudget, currency)}
+                </span>
                 <span className="scenario-per-guest">
-                  ~{formatCurrency(scenario.perGuestCost, currency, { maximumFractionDigits: 1 })} per attendee
+                  ~{formatCurrency(scenario.perGuestCost, currency, { maximumFractionDigits: 1 })}{' '}
+                  per attendee
                 </span>
               </div>
 
@@ -108,7 +112,9 @@ export const ScenariosSection: React.FC<ScenariosSectionProps> = ({
                 </div>
                 <div className="spec-row">
                   <strong className="spec-label">Contingency Cushion:</strong>
-                  <span className="spec-value">{formatCurrency(scenario.contingencyBuffer, currency)}</span>
+                  <span className="spec-value">
+                    {formatCurrency(scenario.contingencyBuffer, currency)}
+                  </span>
                 </div>
               </div>
 
@@ -157,7 +163,8 @@ export const ScenariosSection: React.FC<ScenariosSectionProps> = ({
         </div>
 
         <p className="text-sm text-muted mb-3">
-          Unpredictable weather can disrupt outdoor setups. Complete this 5-point safety verification checklist before finalizing outdoor vendor contracts.
+          Unpredictable weather can disrupt outdoor setups. Complete this 5-point safety
+          verification checklist before finalizing outdoor vendor contracts.
         </p>
 
         <div className="weather-checklist-grid">
@@ -178,7 +185,9 @@ export const ScenariosSection: React.FC<ScenariosSectionProps> = ({
                 <div className="weather-item-body">
                   <div className="weather-item-top">
                     <span className="weather-item-title">{item.title}</span>
-                    <span className={`badge ${item.urgency === 'high' ? 'badge-priority-high' : 'badge-priority-medium'}`}>
+                    <span
+                      className={`badge ${item.urgency === 'high' ? 'badge-priority-high' : 'badge-priority-medium'}`}
+                    >
                       {item.urgency.toUpperCase()} URGENCY
                     </span>
                   </div>

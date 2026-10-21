@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import { Calendar, DollarSign, Sparkles, Users, MapPin, Tag, Globe, Flower2 } from 'lucide-react';
 import { DEFAULT_PRESETS, INDIAN_WEDDING_FUNCTIONS } from '../config.ts';
-import { CurrencyCode, EventPlanInput, EventType, IndianWeddingFunction, Priority, VenueType } from '../types.ts';
+import { CurrencyCode, EventPlanInput, IndianWeddingFunction, Priority } from '../types.ts';
 import { validateEventPlanInput } from '../planner/validation.ts';
 
 interface EventFormProps {
@@ -37,7 +37,7 @@ export const EventForm: React.FC<EventFormProps> = ({
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -72,9 +72,7 @@ export const EventForm: React.FC<EventFormProps> = ({
     setFormData((prev) => {
       const currentList = prev.selectedFunctions || [];
       const exists = currentList.includes(func);
-      const updated = exists
-        ? currentList.filter((f) => f !== func)
-        : [...currentList, func];
+      const updated = exists ? currentList.filter((f) => f !== func) : [...currentList, func];
       return { ...prev, selectedFunctions: updated };
     });
   };
@@ -129,7 +127,8 @@ export const EventForm: React.FC<EventFormProps> = ({
             Configure Your Celebration
           </h2>
           <p className="card-subtitle">
-            Input core specifications. Our deterministic planner will calculate your budget allocations, weekly milestones, and vendor checklists.
+            Input core specifications. Our deterministic planner will calculate your budget
+            allocations, weekly milestones, and vendor checklists.
           </p>
         </div>
 
@@ -157,7 +156,10 @@ export const EventForm: React.FC<EventFormProps> = ({
           {/* Event Category */}
           <div className="form-group">
             <label htmlFor="field-eventType" className="form-label">
-              Event Category <span className="required" aria-hidden="true">*</span>
+              Event Category{' '}
+              <span className="required" aria-hidden="true">
+                *
+              </span>
             </label>
             <select
               id="field-eventType"
@@ -183,7 +185,10 @@ export const EventForm: React.FC<EventFormProps> = ({
           {/* Event Name */}
           <div className="form-group">
             <label htmlFor="field-eventName" className="form-label">
-              Event Title / Name <span className="required" aria-hidden="true">*</span>
+              Event Title / Name{' '}
+              <span className="required" aria-hidden="true">
+                *
+              </span>
             </label>
             <input
               type="text"
@@ -229,7 +234,10 @@ export const EventForm: React.FC<EventFormProps> = ({
           <div className="form-group">
             <label htmlFor="field-eventDate" className="form-label">
               <Calendar size={15} aria-hidden="true" className="label-icon" />
-              Event Date <span className="required" aria-hidden="true">*</span>
+              Event Date{' '}
+              <span className="required" aria-hidden="true">
+                *
+              </span>
             </label>
             <input
               type="date"
@@ -254,7 +262,10 @@ export const EventForm: React.FC<EventFormProps> = ({
           <div className="form-group">
             <label htmlFor="field-guestCount" className="form-label">
               <Users size={15} aria-hidden="true" className="label-icon" />
-              Expected Guests <span className="required" aria-hidden="true">*</span>
+              Expected Guests{' '}
+              <span className="required" aria-hidden="true">
+                *
+              </span>
             </label>
             <input
               type="number"
@@ -280,7 +291,10 @@ export const EventForm: React.FC<EventFormProps> = ({
           <div className="form-group">
             <label htmlFor="field-budget" className="form-label">
               <DollarSign size={15} aria-hidden="true" className="label-icon" />
-              Total Budget ({formData.currency || 'INR'}) <span className="required" aria-hidden="true">*</span>
+              Total Budget ({formData.currency || 'INR'}){' '}
+              <span className="required" aria-hidden="true">
+                *
+              </span>
             </label>
             <input
               type="number"
@@ -307,7 +321,10 @@ export const EventForm: React.FC<EventFormProps> = ({
           <div className="form-group">
             <label htmlFor="field-venueType" className="form-label">
               <MapPin size={15} aria-hidden="true" className="label-icon" />
-              Venue Setting <span className="required" aria-hidden="true">*</span>
+              Venue Setting{' '}
+              <span className="required" aria-hidden="true">
+                *
+              </span>
             </label>
             <select
               id="field-venueType"
@@ -355,7 +372,11 @@ export const EventForm: React.FC<EventFormProps> = ({
                   >
                     <div className="function-chip-top">
                       <span className="function-name">{fn.name}</span>
-                      {isSelected && <span className="function-check" aria-hidden="true">✓</span>}
+                      {isSelected && (
+                        <span className="function-check" aria-hidden="true">
+                          ✓
+                        </span>
+                      )}
                     </div>
                     <span className="function-tagline">{fn.tagline}</span>
                     <span className="function-time text-xs">{fn.recommendedTimeframe}</span>
@@ -372,11 +393,7 @@ export const EventForm: React.FC<EventFormProps> = ({
             <Tag size={15} aria-hidden="true" className="label-icon" />
             Top Priorities (Allocates extra budget share)
           </label>
-          <div
-            className="chip-group"
-            role="group"
-            aria-labelledby="priorities-group-label"
-          >
+          <div className="chip-group" role="group" aria-labelledby="priorities-group-label">
             {priorityOptions.map((opt) => {
               const selected = formData.priorities.includes(opt.id);
               return (
@@ -388,7 +405,12 @@ export const EventForm: React.FC<EventFormProps> = ({
                   aria-pressed={selected}
                 >
                   {opt.label}
-                  {selected && <span className="chip-check" aria-hidden="true"> ✓</span>}
+                  {selected && (
+                    <span className="chip-check" aria-hidden="true">
+                      {' '}
+                      ✓
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -414,11 +436,7 @@ export const EventForm: React.FC<EventFormProps> = ({
 
         {/* Submit Action */}
         <div className="form-actions mt-4">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn btn-primary btn-lg"
-          >
+          <button type="submit" disabled={isSubmitting} className="btn btn-primary btn-lg">
             <Sparkles size={18} aria-hidden="true" />
             <span>{isSubmitting ? 'Updating Plan...' : 'Generate & Update Master Plan'}</span>
           </button>

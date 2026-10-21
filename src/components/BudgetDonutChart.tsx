@@ -53,7 +53,8 @@ export const BudgetDonutChart: React.FC<BudgetDonutChartProps> = ({ budget, curr
         >
           <title id="donut-title">Budget Allocation Chart</title>
           <desc id="donut-desc">
-            Visual donut chart showing distribution across {budget.categories.length} categories totaling {formatCurrency(budget.totalBudget, currency)}.
+            Visual donut chart showing distribution across {budget.categories.length} categories
+            totaling {formatCurrency(budget.totalBudget, currency)}.
           </desc>
 
           {/* Background circle */}

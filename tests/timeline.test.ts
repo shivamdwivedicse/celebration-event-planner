@@ -61,7 +61,7 @@ describe('Timeline Planner Engine', () => {
     };
 
     expect(() => generateTimelinePlan(input, refDate)).toThrowError(
-      /Event date must be strictly in the future/i
+      /Event date must be strictly in the future/i,
     );
   });
 
@@ -110,7 +110,11 @@ describe('Timeline Planner Engine', () => {
       priorities: [],
     };
     const communityPlan = generateTimelinePlan(communityInput, refDate);
-    expect(communityPlan.dayOfSchedule.some((s) => s.activity.includes('Keynote') || s.activity.includes('Clean-Up'))).toBe(true);
+    expect(
+      communityPlan.dayOfSchedule.some(
+        (s) => s.activity.includes('Keynote') || s.activity.includes('Clean-Up'),
+      ),
+    ).toBe(true);
   });
 
   it('generates post-event tasks including rental returns and thank-you notes', () => {

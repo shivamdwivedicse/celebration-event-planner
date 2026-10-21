@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { AlertCircle, Calendar, CheckSquare, Clock, Flag, ListOrdered } from 'lucide-react';
+import { AlertCircle, Calendar, Clock, Flag, ListOrdered } from 'lucide-react';
 import { TimelinePlan } from '../types.ts';
 
 interface TimelineSectionProps {
@@ -135,7 +135,10 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ timeline, even
                           <div className="task-title-row">
                             <span className="task-title">{task.title}</span>
                             {task.isPriority && (
-                              <span className="badge badge-priority" aria-label="Critical priority task">
+                              <span
+                                className="badge badge-priority"
+                                aria-label="Critical priority task"
+                              >
                                 Critical Path
                               </span>
                             )}
@@ -163,7 +166,10 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ timeline, even
         >
           <div className="day-of-intro">
             <ListOrdered size={16} aria-hidden="true" />
-            <span>Master Run-of-Show: Precise hourly staging for on-site coordinators, crew, and vendors.</span>
+            <span>
+              Master Run-of-Show: Precise hourly staging for on-site coordinators, crew, and
+              vendors.
+            </span>
           </div>
 
           <div className="schedule-timeline">
@@ -195,16 +201,14 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ timeline, even
           className="post-event-container"
         >
           <p className="text-muted mb-3">
-            Final closure steps to return borrowed equipment, close open invoices, share photos, and thank contributors.
+            Final closure steps to return borrowed equipment, close open invoices, share photos, and
+            thank contributors.
           </p>
           <ul className="task-list" aria-label="Post-event tasks">
             {timeline.postEventTasks.map((task) => {
               const isChecked = Boolean(completedTaskIds[task.id]);
               return (
-                <li
-                  key={task.id}
-                  className={`task-item ${isChecked ? 'task-completed' : ''}`}
-                >
+                <li key={task.id} className={`task-item ${isChecked ? 'task-completed' : ''}`}>
                   <label className="task-label">
                     <input
                       type="checkbox"

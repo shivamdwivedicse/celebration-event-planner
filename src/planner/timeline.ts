@@ -5,18 +5,27 @@
  * validates against past dates and leap years, and generates day-of & post-event schedules.
  */
 
-import { DayOfScheduleItem, EventPlanInput, TimelinePhase, TimelinePlan, TimelineTask } from '../types.ts';
+import {
+  DayOfScheduleItem,
+  EventPlanInput,
+  TimelinePhase,
+  TimelinePlan,
+  TimelineTask,
+} from '../types.ts';
 
 /**
  * Computes difference in calendar days between reference date and event date (UTC-normalized).
  */
-export function calculateDaysRemaining(eventDateStr: string, referenceDate: Date = new Date()): number {
+export function calculateDaysRemaining(
+  eventDateStr: string,
+  referenceDate: Date = new Date(),
+): number {
   const [year, month, day] = eventDateStr.split('-').map(Number);
   const eventUTC = Date.UTC(year, month - 1, day);
   const refUTC = Date.UTC(
     referenceDate.getUTCFullYear(),
     referenceDate.getUTCMonth(),
-    referenceDate.getUTCDate()
+    referenceDate.getUTCDate(),
   );
 
   const diffMs = eventUTC - refUTC;
@@ -26,7 +35,10 @@ export function calculateDaysRemaining(eventDateStr: string, referenceDate: Date
 /**
  * Generates the full TimelinePlan based on event input and calendar math.
  */
-export function generateTimelinePlan(input: EventPlanInput, referenceDate: Date = new Date()): TimelinePlan {
+export function generateTimelinePlan(
+  input: EventPlanInput,
+  referenceDate: Date = new Date(),
+): TimelinePlan {
   const daysRemaining = calculateDaysRemaining(input.eventDate, referenceDate);
 
   if (daysRemaining <= 0) {
@@ -79,7 +91,8 @@ function generateStandardPhases(input: EventPlanInput, weeksRemaining: number): 
     },
     {
       id: 'task-venue-book',
-      title: input.venueType === 'home' ? 'Confirm Home Layout & Permits' : 'Tour & Reserve Venue Space',
+      title:
+        input.venueType === 'home' ? 'Confirm Home Layout & Permits' : 'Tour & Reserve Venue Space',
       description:
         input.venueType === 'home'
           ? 'Map out backyard/living spaces, power outlets, and neighbor notifications.'
@@ -129,7 +142,8 @@ function generateStandardPhases(input: EventPlanInput, weeksRemaining: number): 
     {
       id: 'task-invitations-send',
       title: 'Distribute Official Invitations & RSVP Tracker',
-      description: 'Send digital/print invitations with RSVP deadline set 3 weeks before the event.',
+      description:
+        'Send digital/print invitations with RSVP deadline set 3 weeks before the event.',
       category: 'Invites',
       timeframe: `${Math.min(weeksRemaining, 6)} Weeks Before`,
       weekOffset: -Math.min(weeksRemaining, 6),
@@ -195,9 +209,10 @@ function generateRushPhases(input: EventPlanInput, daysRemaining: number): Timel
         {
           id: 'rush-venue',
           title: 'Immediate Venue & Space Lock',
-          description: input.venueType === 'home'
-            ? 'Clear furniture, prep home spaces, and secure party tent/umbrellas.'
-            : 'Confirm emergency rental availability or expedited private room booking.',
+          description:
+            input.venueType === 'home'
+              ? 'Clear furniture, prep home spaces, and secure party tent/umbrellas.'
+              : 'Confirm emergency rental availability or expedited private room booking.',
           category: 'Venue',
           timeframe: 'Immediate',
           weekOffset: 0,
@@ -206,7 +221,8 @@ function generateRushPhases(input: EventPlanInput, daysRemaining: number): Timel
         {
           id: 'rush-catering',
           title: 'Order Express Drop-Off Catering or Buffet',
-          description: 'Contact local favorite restaurant for bulk tray drop-off rather than full plated service.',
+          description:
+            'Contact local favorite restaurant for bulk tray drop-off rather than full plated service.',
           category: 'Catering',
           timeframe: 'Immediate',
           weekOffset: 0,
@@ -230,7 +246,8 @@ function generateRushPhases(input: EventPlanInput, daysRemaining: number): Timel
         {
           id: 'rush-supplies',
           title: 'Procure Tableware, Beverages & Party Essentials',
-          description: 'Bulk purchase ice, biodegradable tableware, beverage mixers, and festive banners.',
+          description:
+            'Bulk purchase ice, biodegradable tableware, beverage mixers, and festive banners.',
           category: 'Supplies',
           timeframe: '3 Days Before',
           weekOffset: 0,
@@ -268,41 +285,166 @@ function generateDayOfSchedule(input: EventPlanInput): DayOfScheduleItem[] {
 
   if (isWedding) {
     return [
-      { time: '08:00 AM', activity: 'Hair & Makeup Styling Begins', details: 'Bridal suite setup, breakfast pastries, and champagne toast.', assignedRole: 'Wedding Party / Stylist' },
-      { time: '10:30 AM', activity: 'Vendor Load-In & Rental Delivery', details: 'Tables, chairs, sound equipment, and floral arches positioned.', assignedRole: 'Venue Coordinator' },
-      { time: '01:00 PM', activity: 'Photographer Arrival & Detail Shots', details: 'Rings, dress, stationery, and wedding party first-look session.', assignedRole: 'Photographer' },
-      { time: '03:30 PM', activity: 'Guest Arrival & Welcome Refreshments', details: 'Acoustic background music and signature cocktail station opens.', assignedRole: 'Ushers & Hospitality' },
-      { time: '04:00 PM', activity: 'Official Ceremony Begins', details: 'Processional, vow exchange, unity ritual, and recessional fanfare.', assignedRole: 'Officiant & Planner' },
-      { time: '05:00 PM', activity: 'Cocktail Hour & Golden Hour Portraits', details: 'Passed hors d’oeuvres while couple finishes sunset photo shoot.', assignedRole: 'Caterer & Photographer' },
-      { time: '06:30 PM', activity: 'Grand Entrance & Dinner Service', details: 'Welcome toasts, plated/buffet entrees served with wine pairing.', assignedRole: 'MC & Banquet Captain' },
-      { time: '08:00 PM', activity: 'Cake Cutting & First Dances', details: 'Formal dances followed by dance floor opening with high-energy set.', assignedRole: 'DJ & Couple' },
-      { time: '10:30 PM', activity: 'Grand Sparkler Exit & Load-Out', details: 'Guest send-off followed by rental pack-down and security sign-off.', assignedRole: 'Event Planner & Crew' },
+      {
+        time: '08:00 AM',
+        activity: 'Hair & Makeup Styling Begins',
+        details: 'Bridal suite setup, breakfast pastries, and champagne toast.',
+        assignedRole: 'Wedding Party / Stylist',
+      },
+      {
+        time: '10:30 AM',
+        activity: 'Vendor Load-In & Rental Delivery',
+        details: 'Tables, chairs, sound equipment, and floral arches positioned.',
+        assignedRole: 'Venue Coordinator',
+      },
+      {
+        time: '01:00 PM',
+        activity: 'Photographer Arrival & Detail Shots',
+        details: 'Rings, dress, stationery, and wedding party first-look session.',
+        assignedRole: 'Photographer',
+      },
+      {
+        time: '03:30 PM',
+        activity: 'Guest Arrival & Welcome Refreshments',
+        details: 'Acoustic background music and signature cocktail station opens.',
+        assignedRole: 'Ushers & Hospitality',
+      },
+      {
+        time: '04:00 PM',
+        activity: 'Official Ceremony Begins',
+        details: 'Processional, vow exchange, unity ritual, and recessional fanfare.',
+        assignedRole: 'Officiant & Planner',
+      },
+      {
+        time: '05:00 PM',
+        activity: 'Cocktail Hour & Golden Hour Portraits',
+        details: 'Passed hors d’oeuvres while couple finishes sunset photo shoot.',
+        assignedRole: 'Caterer & Photographer',
+      },
+      {
+        time: '06:30 PM',
+        activity: 'Grand Entrance & Dinner Service',
+        details: 'Welcome toasts, plated/buffet entrees served with wine pairing.',
+        assignedRole: 'MC & Banquet Captain',
+      },
+      {
+        time: '08:00 PM',
+        activity: 'Cake Cutting & First Dances',
+        details: 'Formal dances followed by dance floor opening with high-energy set.',
+        assignedRole: 'DJ & Couple',
+      },
+      {
+        time: '10:30 PM',
+        activity: 'Grand Sparkler Exit & Load-Out',
+        details: 'Guest send-off followed by rental pack-down and security sign-off.',
+        assignedRole: 'Event Planner & Crew',
+      },
     ];
   }
 
   if (isCommunity) {
     return [
-      { time: '07:30 AM', activity: 'Site Logistics & Safety Walkthrough', details: 'Inspect power outlets, signage, trash bins, and first-aid post.', assignedRole: 'Logistics Lead' },
-      { time: '09:00 AM', activity: 'Stage & Audio PA Setup', details: 'Sound check for microphones, community speakers, and performers.', assignedRole: 'Audio Engineer' },
-      { time: '10:00 AM', activity: 'Gates Open & Welcome Registration', details: 'Distribute event maps, name tags, and activity schedule.', assignedRole: 'Volunteer Team' },
-      { time: '11:30 AM', activity: 'Community Keynote & Opening Ceremony', details: 'Remarks from community leaders and festival kickoff announcements.', assignedRole: 'Event Chair' },
-      { time: '12:30 PM', activity: 'Lunch Stalls & Food Truck Rush', details: 'Monitor queue flow and ensure water refill stations are stocked.', assignedRole: 'Food Stalls Team' },
-      { time: '02:30 PM', activity: 'Interactive Games, Workshops & Raffle', details: 'Kids activities, craft workshops, and community raffle drawing.', assignedRole: 'Activities Coordinator' },
-      { time: '05:00 PM', activity: 'Closing Musical Showcase', details: 'Featured local band performance and appreciation acknowledgments.', assignedRole: 'Stage Manager' },
-      { time: '06:30 PM', activity: 'Community Clean-Up & Site Restoration', details: 'Trash collection, recycling breakdown, and municipal hand-over.', assignedRole: 'All Volunteers' },
+      {
+        time: '07:30 AM',
+        activity: 'Site Logistics & Safety Walkthrough',
+        details: 'Inspect power outlets, signage, trash bins, and first-aid post.',
+        assignedRole: 'Logistics Lead',
+      },
+      {
+        time: '09:00 AM',
+        activity: 'Stage & Audio PA Setup',
+        details: 'Sound check for microphones, community speakers, and performers.',
+        assignedRole: 'Audio Engineer',
+      },
+      {
+        time: '10:00 AM',
+        activity: 'Gates Open & Welcome Registration',
+        details: 'Distribute event maps, name tags, and activity schedule.',
+        assignedRole: 'Volunteer Team',
+      },
+      {
+        time: '11:30 AM',
+        activity: 'Community Keynote & Opening Ceremony',
+        details: 'Remarks from community leaders and festival kickoff announcements.',
+        assignedRole: 'Event Chair',
+      },
+      {
+        time: '12:30 PM',
+        activity: 'Lunch Stalls & Food Truck Rush',
+        details: 'Monitor queue flow and ensure water refill stations are stocked.',
+        assignedRole: 'Food Stalls Team',
+      },
+      {
+        time: '02:30 PM',
+        activity: 'Interactive Games, Workshops & Raffle',
+        details: 'Kids activities, craft workshops, and community raffle drawing.',
+        assignedRole: 'Activities Coordinator',
+      },
+      {
+        time: '05:00 PM',
+        activity: 'Closing Musical Showcase',
+        details: 'Featured local band performance and appreciation acknowledgments.',
+        assignedRole: 'Stage Manager',
+      },
+      {
+        time: '06:30 PM',
+        activity: 'Community Clean-Up & Site Restoration',
+        details: 'Trash collection, recycling breakdown, and municipal hand-over.',
+        assignedRole: 'All Volunteers',
+      },
     ];
   }
 
   // Birthday celebration default
   return [
-    { time: '11:00 AM', activity: 'Decor Staging & Balloon Arches', details: 'Hang birthday banners, backdrop photo booth, and balloon pillars.', assignedRole: 'Host & Helpers' },
-    { time: '01:00 PM', activity: 'Cake & Catering Delivery', details: 'Refrigerate birthday cake, set warming trays, and chill beverages.', assignedRole: 'Catering Lead' },
-    { time: '02:00 PM', activity: 'Playlist & Lighting Ambience Ready', details: 'Turn on party lighting, connect music, and set up board games/props.', assignedRole: 'Host' },
-    { time: '03:00 PM', activity: 'Guest Arrival & Welcome Drinks', details: 'Greet guests, receive gifts, and serve welcome mocktails/cocktails.', assignedRole: 'Host' },
-    { time: '04:30 PM', activity: 'Party Games & Social Activities', details: 'Trivia, themed party games, or karaoke session.', assignedRole: 'Activity Leader' },
-    { time: '06:00 PM', activity: 'Dinner Buffet / Food Station', details: 'Serve main meal options and social dining.', assignedRole: 'Food Coordinator' },
-    { time: '07:15 PM', activity: 'Birthday Song & Cake Cutting', details: 'Candle lighting, birthday wishes, and cake distribution.', assignedRole: 'Host & Guests' },
-    { time: '09:00 PM', activity: 'Favors Distribution & Farewell', details: 'Hand out gift bags and wrap up remaining leftovers.', assignedRole: 'Host' },
+    {
+      time: '11:00 AM',
+      activity: 'Decor Staging & Balloon Arches',
+      details: 'Hang birthday banners, backdrop photo booth, and balloon pillars.',
+      assignedRole: 'Host & Helpers',
+    },
+    {
+      time: '01:00 PM',
+      activity: 'Cake & Catering Delivery',
+      details: 'Refrigerate birthday cake, set warming trays, and chill beverages.',
+      assignedRole: 'Catering Lead',
+    },
+    {
+      time: '02:00 PM',
+      activity: 'Playlist & Lighting Ambience Ready',
+      details: 'Turn on party lighting, connect music, and set up board games/props.',
+      assignedRole: 'Host',
+    },
+    {
+      time: '03:00 PM',
+      activity: 'Guest Arrival & Welcome Drinks',
+      details: 'Greet guests, receive gifts, and serve welcome mocktails/cocktails.',
+      assignedRole: 'Host',
+    },
+    {
+      time: '04:30 PM',
+      activity: 'Party Games & Social Activities',
+      details: 'Trivia, themed party games, or karaoke session.',
+      assignedRole: 'Activity Leader',
+    },
+    {
+      time: '06:00 PM',
+      activity: 'Dinner Buffet / Food Station',
+      details: 'Serve main meal options and social dining.',
+      assignedRole: 'Food Coordinator',
+    },
+    {
+      time: '07:15 PM',
+      activity: 'Birthday Song & Cake Cutting',
+      details: 'Candle lighting, birthday wishes, and cake distribution.',
+      assignedRole: 'Host & Guests',
+    },
+    {
+      time: '09:00 PM',
+      activity: 'Favors Distribution & Farewell',
+      details: 'Hand out gift bags and wrap up remaining leftovers.',
+      assignedRole: 'Host',
+    },
   ];
 }
 
@@ -314,7 +456,8 @@ function generatePostEventTasks(input: EventPlanInput): TimelineTask[] {
     {
       id: 'post-rentals-return',
       title: 'Return Rented Equipment & Linens',
-      description: 'Check off itemized rental inventory, inspect for damage, and return containers.',
+      description:
+        'Check off itemized rental inventory, inspect for damage, and return containers.',
       category: 'Rentals',
       timeframe: 'Day +1 to +2 Post-Event',
       weekOffset: 1,

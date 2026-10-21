@@ -58,7 +58,9 @@ describe('Plan Health Score Engine', () => {
     expect(health.categoryScores.vendorStatus).toBeLessThan(15);
     expect(health.score).toBeLessThan(75);
     expect(health.fixes.length).toBeGreaterThan(0);
-    expect(health.fixes.some((f) => f.includes('critical path') || f.includes('Fast-track'))).toBe(true);
+    expect(health.fixes.some((f) => f.includes('critical path') || f.includes('Fast-track'))).toBe(
+      true,
+    );
   });
 
   it('penalizes per-guest adequacy when budget is critically insufficient', () => {
@@ -132,6 +134,8 @@ describe('Plan Health Score Engine', () => {
     expect(health.categoryScores.budgetBalance).toBeLessThanOrEqual(15);
     expect(health.categoryScores.timelineReadiness).toBe(15); // 4 weeks out
     expect(health.categoryScores.perGuestAdequacy).toBe(14); // tight budget
-    expect(health.fixes.some((f) => f.includes('contingency') || f.includes('headcount'))).toBe(true);
+    expect(health.fixes.some((f) => f.includes('contingency') || f.includes('headcount'))).toBe(
+      true,
+    );
   });
 });

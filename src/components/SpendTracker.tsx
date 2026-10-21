@@ -5,8 +5,15 @@
  * and safeguards persistence in localStorage.
  */
 
-import React, { useState, useEffect } from 'react';
-import { AlertCircle, CheckCircle2, DollarSign, RotateCcw, TrendingDown, TrendingUp } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+  AlertCircle,
+  CheckCircle2,
+  DollarSign,
+  RotateCcw,
+  TrendingDown,
+  TrendingUp,
+} from 'lucide-react';
 import { BudgetCategory, CurrencyCode } from '../types.ts';
 import {
   calculateSpendSummary,
@@ -22,7 +29,7 @@ interface SpendTrackerProps {
 
 export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency = 'INR' }) => {
   const [actualSpends, setActualSpends] = useState<Record<string, number>>(() =>
-    loadActualSpendsFromStorage()
+    loadActualSpendsFromStorage(),
   );
 
   const summary = calculateSpendSummary(categories, actualSpends);
@@ -50,7 +57,8 @@ export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency
             Actual Spend Tracker & Variance
           </h2>
           <p className="card-subtitle">
-            Record invoice payments and actual vendor disbursements to monitor your budget remaining in real-time.
+            Record invoice payments and actual vendor disbursements to monitor your budget remaining
+            in real-time.
           </p>
         </div>
 
@@ -74,8 +82,16 @@ export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency
           <div className="overdue-summary-text">
             <strong>Budget Deficit Alert:</strong>
             <p className="text-sm">
-              {summary.overBudgetCategories.length} categor{summary.overBudgetCategories.length === 1 ? 'y has' : 'ies have'} exceeded planned allocations:
-              {' '}{summary.overBudgetCategories.map((c) => `${c.categoryName} (${formatCurrency(Math.abs(c.variance), currency)} over)`).join(', ')}.
+              {summary.overBudgetCategories.length} categor
+              {summary.overBudgetCategories.length === 1 ? 'y has' : 'ies have'} exceeded planned
+              allocations:{' '}
+              {summary.overBudgetCategories
+                .map(
+                  (c) =>
+                    `${c.categoryName} (${formatCurrency(Math.abs(c.variance), currency)} over)`,
+                )
+                .join(', ')}
+              .
             </p>
           </div>
         </div>
@@ -110,7 +126,8 @@ export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency
             <strong
               className={`kpi-value ${summary.totalRemaining < 0 ? 'text-danger' : 'text-emerald'}`}
             >
-              {formatCurrency(summary.totalRemaining, currency)} ({summary.totalPercentSpent}% spent)
+              {formatCurrency(summary.totalRemaining, currency)} ({summary.totalPercentSpent}%
+              spent)
             </strong>
           </div>
         </div>
@@ -122,9 +139,15 @@ export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency
           <thead>
             <tr>
               <th scope="col">Category</th>
-              <th scope="col" className="text-right">Planned Allocation</th>
-              <th scope="col" style={{ width: '13rem' }}>Actual Spent ({currency})</th>
-              <th scope="col" className="text-right">Variance / Remaining</th>
+              <th scope="col" className="text-right">
+                Planned Allocation
+              </th>
+              <th scope="col" style={{ width: '13rem' }}>
+                Actual Spent ({currency})
+              </th>
+              <th scope="col" className="text-right">
+                Variance / Remaining
+              </th>
               <th scope="col">Progress</th>
             </tr>
           </thead>
@@ -134,7 +157,9 @@ export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency
                 <th scope="row" className="category-cell">
                   <span className="category-title">{item.categoryName}</span>
                 </th>
-                <td className="text-right font-medium">{formatCurrency(item.plannedAmount, currency)}</td>
+                <td className="text-right font-medium">
+                  {formatCurrency(item.plannedAmount, currency)}
+                </td>
                 <td>
                   <div className="spend-input-wrapper">
                     <label htmlFor={`spend-${item.categoryId}`} className="sr-only">
@@ -152,7 +177,9 @@ export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency
                     />
                   </div>
                 </td>
-                <td className={`text-right font-semibold ${item.isOverBudget ? 'text-danger' : 'text-emerald'}`}>
+                <td
+                  className={`text-right font-semibold ${item.isOverBudget ? 'text-danger' : 'text-emerald'}`}
+                >
                   {item.variance >= 0
                     ? `+${formatCurrency(item.variance, currency)}`
                     : `-${formatCurrency(Math.abs(item.variance), currency)}`}
@@ -175,9 +202,13 @@ export const SpendTracker: React.FC<SpendTrackerProps> = ({ categories, currency
           <tfoot>
             <tr className="table-total-row">
               <th scope="row">Net Spending Total</th>
-              <td className="text-right font-bold">{formatCurrency(summary.totalPlanned, currency)}</td>
+              <td className="text-right font-bold">
+                {formatCurrency(summary.totalPlanned, currency)}
+              </td>
               <td className="font-bold">{formatCurrency(summary.totalActual, currency)}</td>
-              <td className={`text-right font-bold ${summary.totalRemaining < 0 ? 'text-danger' : 'text-emerald'}`}>
+              <td
+                className={`text-right font-bold ${summary.totalRemaining < 0 ? 'text-danger' : 'text-emerald'}`}
+              >
                 {summary.totalRemaining >= 0
                   ? `+${formatCurrency(summary.totalRemaining, currency)}`
                   : `-${formatCurrency(Math.abs(summary.totalRemaining), currency)}`}

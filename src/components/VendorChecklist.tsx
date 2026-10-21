@@ -5,7 +5,14 @@
  */
 
 import React, { useState } from 'react';
-import { AlertCircle, CheckCircle2, ChevronDown, ChevronUp, HelpCircle, ShieldAlert } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  HelpCircle,
+  ShieldAlert,
+} from 'lucide-react';
 import { VendorItem } from '../types.ts';
 
 interface VendorChecklistProps {
@@ -95,9 +102,12 @@ export const VendorChecklist: React.FC<VendorChecklistProps> = ({ vendors }) => 
         <div className="overdue-summary-banner" role="alert">
           <ShieldAlert size={20} aria-hidden="true" className="overdue-icon" />
           <div className="overdue-summary-text">
-            <strong>{overdueCount} Vendor{overdueCount === 1 ? '' : 's'} Past Standard Lead Time:</strong>
+            <strong>
+              {overdueCount} Vendor{overdueCount === 1 ? '' : 's'} Past Standard Lead Time:
+            </strong>
             <p className="text-sm">
-              Securing these partners is critical. Popular local vendors book out fast for your celebration date.
+              Securing these partners is critical. Popular local vendors book out fast for your
+              celebration date.
             </p>
           </div>
         </div>
@@ -176,7 +186,9 @@ export const VendorChecklist: React.FC<VendorChecklistProps> = ({ vendors }) => 
                       <ul className="questions-list">
                         {vendor.suggestedQuestions.map((q, idx) => (
                           <li key={idx} className="question-item">
-                            <span className="question-number" aria-hidden="true">Q{idx + 1}:</span>
+                            <span className="question-number" aria-hidden="true">
+                              Q{idx + 1}:
+                            </span>
                             <span className="question-text">{q}</span>
                           </li>
                         ))}

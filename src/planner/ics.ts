@@ -98,7 +98,7 @@ export function generateIcsCalendar(input: EventPlanInput, timeline: TimelinePla
         `DESCRIPTION:${escapeIcsText(task.description)}\\nPhase: ${escapeIcsText(phase.phaseName)}`,
         'STATUS:CONFIRMED',
         task.isPriority ? 'PRIORITY:1' : 'PRIORITY:5',
-        'END:VEVENT'
+        'END:VEVENT',
       );
     }
   }
@@ -114,7 +114,7 @@ export function generateIcsCalendar(input: EventPlanInput, timeline: TimelinePla
     const startM = String(minutes).padStart(2, '0');
 
     // Approximate 1 hour duration or until next slot
-    let endHours = (hours + 1) % 24;
+    const endHours = (hours + 1) % 24;
     const endH = String(endHours).padStart(2, '0');
 
     const dtStart = `${eventDateDigits}T${startH}${startM}00`;
@@ -131,7 +131,7 @@ export function generateIcsCalendar(input: EventPlanInput, timeline: TimelinePla
       `DESCRIPTION:${escapeIcsText(item.details)}\\nLead: ${escapeIcsText(item.assignedRole)}`,
       'STATUS:CONFIRMED',
       'PRIORITY:1',
-      'END:VEVENT'
+      'END:VEVENT',
     );
   }
 
@@ -150,7 +150,7 @@ export function generateIcsCalendar(input: EventPlanInput, timeline: TimelinePla
       `SUMMARY:[Wrap-Up] ${escapeIcsText(task.title)}`,
       `DESCRIPTION:${escapeIcsText(task.description)}`,
       'STATUS:CONFIRMED',
-      'END:VEVENT'
+      'END:VEVENT',
     );
   }
 

@@ -5,7 +5,7 @@
  */
 
 import { SYSTEM_LIMITS } from '../config.ts';
-import { ChatIntentResult, EventPlanInput, Priority, VenueType } from '../types.ts';
+import { ChatIntentResult, EventPlanInput, Priority } from '../types.ts';
 
 /**
  * Parses a user's natural language message against the current active EventPlanInput.
@@ -23,7 +23,7 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
       const reduction = (currentPlan.budget * pct) / 100;
       const newBudget = Math.max(
         SYSTEM_LIMITS.MIN_BUDGET,
-        Math.round(currentPlan.budget - reduction)
+        Math.round(currentPlan.budget - reduction),
       );
       return {
         matched: true,
@@ -43,7 +43,7 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
       const increase = (currentPlan.budget * pct) / 100;
       const newBudget = Math.min(
         SYSTEM_LIMITS.MAX_BUDGET,
-        Math.round(currentPlan.budget + increase)
+        Math.round(currentPlan.budget + increase),
       );
       return {
         matched: true,
@@ -63,7 +63,7 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
     if (!isNaN(cutAmount) && cutAmount > 0) {
       const newBudget = Math.max(
         SYSTEM_LIMITS.MIN_BUDGET,
-        Math.round(currentPlan.budget - cutAmount)
+        Math.round(currentPlan.budget - cutAmount),
       );
       return {
         matched: true,
@@ -82,7 +82,7 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
     if (!isNaN(addAmount) && addAmount > 0) {
       const newBudget = Math.min(
         SYSTEM_LIMITS.MAX_BUDGET,
-        Math.round(currentPlan.budget + addAmount)
+        Math.round(currentPlan.budget + addAmount),
       );
       return {
         matched: true,
@@ -134,10 +134,7 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
   const deltaAddGuestMatch = text.match(deltaAddGuestRegex);
   if (deltaAddGuestMatch) {
     const delta = parseInt(deltaAddGuestMatch[1], 10);
-    const newCount = Math.min(
-      SYSTEM_LIMITS.MAX_GUESTS,
-      currentPlan.guestCount + delta
-    );
+    const newCount = Math.min(SYSTEM_LIMITS.MAX_GUESTS, currentPlan.guestCount + delta);
     return {
       matched: true,
       type: 'modify_guests_delta',
@@ -150,10 +147,7 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
   const deltaCutGuestMatch = text.match(deltaCutGuestRegex);
   if (deltaCutGuestMatch) {
     const delta = parseInt(deltaCutGuestMatch[1], 10);
-    const newCount = Math.max(
-      SYSTEM_LIMITS.MIN_GUESTS,
-      currentPlan.guestCount - delta
-    );
+    const newCount = Math.max(SYSTEM_LIMITS.MIN_GUESTS, currentPlan.guestCount - delta);
     return {
       matched: true,
       type: 'modify_guests_delta',
@@ -163,7 +157,13 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
   }
 
   // 6. Venue location switch: "switch to outdoor venue", "change venue to home", "make venue indoor"
-  if (text.includes('outdoor') && (text.includes('venue') || text.includes('switch') || text.includes('change') || text.includes('move'))) {
+  if (
+    text.includes('outdoor') &&
+    (text.includes('venue') ||
+      text.includes('switch') ||
+      text.includes('change') ||
+      text.includes('move'))
+  ) {
     return {
       matched: true,
       type: 'modify_venue',
@@ -171,15 +171,28 @@ export function parseChatIntent(message: string, currentPlan: EventPlanInput): C
       summary: 'Switched venue setting to Outdoor (budget updated with tent & weather logistics).',
     };
   }
-  if ((text.includes('home') || text.includes('backyard') || text.includes('house')) && (text.includes('venue') || text.includes('switch') || text.includes('change') || text.includes('move'))) {
+  if (
+    (text.includes('home') || text.includes('backyard') || text.includes('house')) &&
+    (text.includes('venue') ||
+      text.includes('switch') ||
+      text.includes('change') ||
+      text.includes('move'))
+  ) {
     return {
       matched: true,
       type: 'modify_venue',
       newVenueType: 'home',
-      summary: 'Switched venue setting to Home / Backyard (rental fees lowered; catering & decor boosted).',
+      summary:
+        'Switched venue setting to Home / Backyard (rental fees lowered; catering & decor boosted).',
     };
   }
-  if (text.includes('indoor') && (text.includes('venue') || text.includes('switch') || text.includes('change') || text.includes('move'))) {
+  if (
+    text.includes('indoor') &&
+    (text.includes('venue') ||
+      text.includes('switch') ||
+      text.includes('change') ||
+      text.includes('move'))
+  ) {
     return {
       matched: true,
       type: 'modify_venue',

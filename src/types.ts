@@ -8,13 +8,7 @@ export type EventType = 'wedding' | 'birthday' | 'community';
 
 export type VenueType = 'indoor' | 'outdoor' | 'home';
 
-export type Priority =
-  | 'food'
-  | 'venue'
-  | 'photography'
-  | 'entertainment'
-  | 'decor'
-  | 'invitations';
+export type Priority = 'food' | 'venue' | 'photography' | 'entertainment' | 'decor' | 'invitations';
 
 export type CurrencyCode = 'INR' | 'USD' | 'EUR';
 

@@ -22,12 +22,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
   if (!message) return null;
 
   return (
-    <div
-      id={id}
-      role="alert"
-      aria-live="assertive"
-      className="error-banner"
-    >
+    <div id={id} role="alert" aria-live="assertive" className="error-banner">
       <div className="error-banner-content">
         <AlertCircle className="error-icon" aria-hidden="true" size={20} />
         <div className="error-text">

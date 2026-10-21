@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { Activity, AlertTriangle, CheckCircle, Lightbulb, ShieldCheck } from 'lucide-react';
+import { Lightbulb, ShieldCheck } from 'lucide-react';
 import { HealthScoreResult } from '../types.ts';
 
 interface HealthScoreCardProps {
@@ -47,7 +47,8 @@ export const HealthScoreCard: React.FC<HealthScoreCardProps> = ({ health }) => {
             </span>
           </div>
           <p className="card-subtitle">
-            Deterministic diagnostic measuring budget balance, per-guest funding, vendor lead-time risks, and timeline pace.
+            Deterministic diagnostic measuring budget balance, per-guest funding, vendor lead-time
+            risks, and timeline pace.
           </p>
         </div>
       </div>
@@ -64,14 +65,7 @@ export const HealthScoreCard: React.FC<HealthScoreCardProps> = ({ health }) => {
             aria-label="Event Feasibility & Plan Health Score"
           >
             <svg className="gauge-svg" viewBox="0 0 100 100" aria-hidden="true">
-              <circle
-                className="gauge-bg"
-                cx="50"
-                cy="50"
-                r="40"
-                strokeWidth="10"
-                fill="none"
-              />
+              <circle className="gauge-bg" cx="50" cy="50" r="40" strokeWidth="10" fill="none" />
               <circle
                 className="gauge-meter"
                 cx="50"
@@ -97,10 +91,10 @@ export const HealthScoreCard: React.FC<HealthScoreCardProps> = ({ health }) => {
             {health.score >= 85
               ? 'Your celebration blueprint is robust with balanced reserves and viable margins.'
               : health.score >= 70
-              ? 'Solid plan with manageable risks. Review vendor lead times below.'
-              : health.score >= 50
-              ? 'Moderate friction points identified. Recommended adjustments provided.'
-              : 'Critical risks detected. Immediate budget or headcount adjustments advised.'}
+                ? 'Solid plan with manageable risks. Review vendor lead times below.'
+                : health.score >= 50
+                  ? 'Moderate friction points identified. Recommended adjustments provided.'
+                  : 'Critical risks detected. Immediate budget or headcount adjustments advised.'}
           </p>
         </div>
 
@@ -184,7 +178,9 @@ export const HealthScoreCard: React.FC<HealthScoreCardProps> = ({ health }) => {
                 <ul className="health-box-list">
                   {health.fixes.map((fix, idx) => (
                     <li key={idx} className="health-box-item">
-                      <span className="bullet-point" aria-hidden="true">•</span>
+                      <span className="bullet-point" aria-hidden="true">
+                        •
+                      </span>
                       <span>{fix}</span>
                     </li>
                   ))}
@@ -200,7 +196,9 @@ export const HealthScoreCard: React.FC<HealthScoreCardProps> = ({ health }) => {
               <ul className="health-box-list">
                 {health.reasons.map((reason, idx) => (
                   <li key={idx} className="health-box-item">
-                    <span className="bullet-point" aria-hidden="true">•</span>
+                    <span className="bullet-point" aria-hidden="true">
+                      •
+                    </span>
                     <span>{reason}</span>
                   </li>
                 ))}

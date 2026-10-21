@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import {
   escapeIcsText,
   formatIcsDate,
-  formatIcsTimestamp,
   parseTimeString,
   generateIcsCalendar,
   downloadIcsFile,
@@ -14,7 +13,8 @@ describe('iCalendar (.ics) RFC 5545 Export Engine', () => {
   const refDate = new Date('2027-01-01T00:00:00Z');
 
   it('escapes characters strictly per RFC 5545 (backslashes, semicolons, commas, newlines)', () => {
-    const rawText = 'Welcome; to our wedding, featuring a \\ special gift\nNew line here\r\nSecond line';
+    const rawText =
+      'Welcome; to our wedding, featuring a \\ special gift\nNew line here\r\nSecond line';
     const escaped = escapeIcsText(rawText);
 
     expect(escaped).toContain('\\;');

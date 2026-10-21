@@ -60,7 +60,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ currentPlan, onApplyPlanUpdate
 
       if (intentResult.matched) {
         // Intent matched: apply deterministic mutations directly to the plan
-        let updatedPlan: EventPlanInput = { ...currentPlan };
+        const updatedPlan: EventPlanInput = { ...currentPlan };
 
         if (intentResult.newBudget !== undefined) {
           updatedPlan.budget = intentResult.newBudget;
@@ -138,7 +138,8 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ currentPlan, onApplyPlanUpdate
             Planning Assistant & Smart Adjuster
           </h2>
           <p className="card-subtitle">
-            Chat to ask questions or give commands like &quot;cut budget 20%&quot; to adapt your plan dynamically.
+            Chat to ask questions or give commands like &quot;cut budget 20%&quot; to adapt your
+            plan dynamically.
           </p>
         </div>
       </div>

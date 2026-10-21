@@ -17,7 +17,8 @@ export function getCuratedFallbackIdeas(input: EventPlanInput): IdeasResult {
       source: 'fallback',
       themeIdeas: [
         {
-          title: venueType === 'outdoor' ? 'Enchanted Botanical Garden' : 'Modern Candlelit Elegance',
+          title:
+            venueType === 'outdoor' ? 'Enchanted Botanical Garden' : 'Modern Candlelit Elegance',
           description:
             'A warm, romantic celebration highlighted by layered textural florals, warm tungsten fairy lights, and timeless neutral accents.',
           decorNotes:
@@ -227,7 +228,8 @@ export function getCuratedFallbackIdeas(input: EventPlanInput): IdeasResult {
           'Locally sourced bakery pretzels, fresh apples, and popcorn bags',
           'Fresh-squeezed fruit lemonades and fair-trade iced teas',
         ],
-        notes: 'Reduces organizer prep overhead by partnering with vetted licensed local food vendors.',
+        notes:
+          'Reduces organizer prep overhead by partnering with vetted licensed local food vendors.',
       },
     ],
   };

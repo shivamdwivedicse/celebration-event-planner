@@ -14,11 +14,7 @@ interface IdeasSectionProps {
   onRefreshIdeas: () => void;
 }
 
-export const IdeasSection: React.FC<IdeasSectionProps> = ({
-  ideas,
-  isLoading,
-  onRefreshIdeas,
-}) => {
+export const IdeasSection: React.FC<IdeasSectionProps> = ({ ideas, isLoading, onRefreshIdeas }) => {
   if (!ideas && !isLoading) {
     return null;
   }
@@ -58,7 +54,8 @@ export const IdeasSection: React.FC<IdeasSectionProps> = ({
             )}
           </div>
           <p className="card-subtitle">
-            Thematic inspiration, crowd engagement, and dining concepts harmonized with your venue and budget.
+            Thematic inspiration, crowd engagement, and dining concepts harmonized with your venue
+            and budget.
           </p>
         </div>
 
@@ -98,10 +95,14 @@ export const IdeasSection: React.FC<IdeasSectionProps> = ({
                   <h4 className="theme-title">{theme.title}</h4>
                   <p className="theme-description">{theme.description}</p>
                   <div className="decor-notes">
-                    <strong className="decor-notes-label">Atmosphere & Styling:</strong> {theme.decorNotes}
+                    <strong className="decor-notes-label">Atmosphere & Styling:</strong>{' '}
+                    {theme.decorNotes}
                   </div>
                   {Array.isArray(theme.colorPalette) && theme.colorPalette.length > 0 && (
-                    <div className="palette-row" aria-label={`Color palette: ${theme.colorPalette.join(', ')}`}>
+                    <div
+                      className="palette-row"
+                      aria-label={`Color palette: ${theme.colorPalette.join(', ')}`}
+                    >
                       <span className="palette-label">Palette:</span>
                       <div className="palette-swatches">
                         {theme.colorPalette.map((color, cIdx) => (
@@ -141,7 +142,9 @@ export const IdeasSection: React.FC<IdeasSectionProps> = ({
                   <p className="activity-desc">{act.description}</p>
                   <div className="activity-target">
                     <Users size={12} aria-hidden="true" />
-                    <span>Audience: <strong>{act.targetGroup}</strong></span>
+                    <span>
+                      Audience: <strong>{act.targetGroup}</strong>
+                    </span>
                   </div>
                 </div>
               ))}
@@ -162,7 +165,9 @@ export const IdeasSection: React.FC<IdeasSectionProps> = ({
                   <ul className="menu-items-list">
                     {menu.items.map((item, mIdx) => (
                       <li key={mIdx} className="menu-item-entry">
-                        <span className="bullet-point" aria-hidden="true">•</span>
+                        <span className="bullet-point" aria-hidden="true">
+                          •
+                        </span>
                         <span>{item}</span>
                       </li>
                     ))}

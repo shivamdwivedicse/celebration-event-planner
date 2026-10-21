@@ -4,7 +4,14 @@
  */
 
 import { SYSTEM_LIMITS } from '../config.ts';
-import { EventPlanInput, EventType, Priority, ValidationResult, VenueType } from '../types.ts';
+import {
+  EventPlanInput,
+  EventType,
+  IndianWeddingFunction,
+  Priority,
+  ValidationResult,
+  VenueType,
+} from '../types.ts';
 
 const VALID_EVENT_TYPES: EventType[] = ['wedding', 'birthday', 'community'];
 const VALID_VENUE_TYPES: VenueType[] = ['indoor', 'outdoor', 'home'];
@@ -24,7 +31,7 @@ export function sanitizeString(val: unknown, maxLength: number): string {
   if (typeof val !== 'string') return '';
   return val
     .replace(/<[^>]*>?/gm, '') // Remove HTML tags
-    .replace(/[^\w\s\.,!\?'"\-&()#$@]/gi, '') // Keep alphanumeric and benign punctuation
+    .replace(/[^\w\s.,!?'"\-&()#$@]/gi, '') // Keep alphanumeric and benign punctuation
     .trim()
     .slice(0, maxLength);
 }
@@ -33,7 +40,10 @@ export function sanitizeString(val: unknown, maxLength: number): string {
  * Checks whether an ISO date string is syntactically valid and strictly in the future.
  * Explicitly verifies real calendar dates (e.g. catches Feb 31 or invalid leap years).
  */
-export function validateFutureDate(dateStr: string, referenceDate: Date = new Date()): { isValid: boolean; error?: string } {
+export function validateFutureDate(
+  dateStr: string,
+  referenceDate: Date = new Date(),
+): { isValid: boolean; error?: string } {
   if (!dateStr || typeof dateStr !== 'string') {
     return { isValid: false, error: 'Event date is required.' };
   }
@@ -57,7 +67,10 @@ export function validateFutureDate(dateStr: string, referenceDate: Date = new Da
   // Calendar days in month check (including leap year)
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
   if (day < 1 || day > daysInMonth) {
-    return { isValid: false, error: `Invalid day for month ${month}: only ${daysInMonth} days exist.` };
+    return {
+      isValid: false,
+      error: `Invalid day for month ${month}: only ${daysInMonth} days exist.`,
+    };
   }
 
   // Compare strictly as midnight UTC
@@ -65,7 +78,7 @@ export function validateFutureDate(dateStr: string, referenceDate: Date = new Da
   const refMidnightUTC = Date.UTC(
     referenceDate.getUTCFullYear(),
     referenceDate.getUTCMonth(),
-    referenceDate.getUTCDate()
+    referenceDate.getUTCDate(),
   );
 
   if (inputMidnightUTC <= refMidnightUTC) {
@@ -80,7 +93,7 @@ export function validateFutureDate(dateStr: string, referenceDate: Date = new Da
  */
 export function validateEventPlanInput(
   rawInput: Partial<EventPlanInput> | null | undefined,
-  referenceDate?: Date
+  referenceDate?: Date,
 ): ValidationResult {
   const errors: Record<string, string> = {};
 
@@ -140,7 +153,7 @@ export function validateEventPlanInput(
   // Priorities
   const rawPriorities = Array.isArray(rawInput.priorities) ? rawInput.priorities : [];
   const sanitizedPriorities: Priority[] = rawPriorities.filter((p): p is Priority =>
-    VALID_PRIORITIES.includes(p as Priority)
+    VALID_PRIORITIES.includes(p as Priority),
   );
 
   // Notes
@@ -155,7 +168,9 @@ export function validateEventPlanInput(
   // Selected Indian Wedding Functions
   const validFunctions = ['Haldi', 'Mehendi', 'Sangeet', 'Wedding', 'Reception'];
   const selectedFunctions = Array.isArray(rawInput.selectedFunctions)
-    ? rawInput.selectedFunctions.filter((f): f is any => validFunctions.includes(f))
+    ? rawInput.selectedFunctions.filter((f): f is IndianWeddingFunction =>
+        validFunctions.includes(f),
+      )
     : undefined;
 
   const isValid = Object.keys(errors).length === 0;

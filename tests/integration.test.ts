@@ -35,7 +35,12 @@ describe('End-to-End Planning Flow Integration Test', () => {
     const initialBudget = calculateBudgetPlan(plan);
     const initialTimeline = generateTimelinePlan(plan, refDate);
     const initialVendors = generateVendorChecklist(plan, refDate);
-    const initialHealth = calculatePlanHealthScore(plan, initialBudget, initialTimeline, initialVendors);
+    const initialHealth = calculatePlanHealthScore(
+      plan,
+      initialBudget,
+      initialTimeline,
+      initialVendors,
+    );
 
     expect(initialBudget.totalBudget).toBe(1500000);
     expect(initialBudget.categories.reduce((acc, c) => acc + c.amount, 0)).toBe(1500000);
@@ -57,7 +62,12 @@ describe('End-to-End Planning Flow Integration Test', () => {
 
     // Step 5: Recalculate deterministic models with updated budget
     const updatedBudget = calculateBudgetPlan(updatedPlan);
-    const updatedHealth = calculatePlanHealthScore(updatedPlan, updatedBudget, initialTimeline, initialVendors);
+    const updatedHealth = calculatePlanHealthScore(
+      updatedPlan,
+      updatedBudget,
+      initialTimeline,
+      initialVendors,
+    );
 
     expect(updatedBudget.totalBudget).toBe(1200000);
     const sumCategories = updatedBudget.categories.reduce((acc, c) => acc + c.amount, 0);

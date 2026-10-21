@@ -24,7 +24,7 @@ export function calculatePlanHealthScore(
   input: EventPlanInput,
   budget: BudgetBreakdown,
   timeline: TimelinePlan,
-  vendors: VendorItem[]
+  vendors: VendorItem[],
 ): HealthScoreResult {
   const reasons: string[] = [];
   const fixes: string[] = [];
@@ -60,9 +60,8 @@ export function calculatePlanHealthScore(
 
   // --- Dimension 2: Per-Guest Financial Adequacy (max 30 pts) ---
   let perGuestAdequacy = 30;
-  const currency = input.currency || 'USD';
   const benchmarks =
-    (input.currency && PER_GUEST_BENCHMARKS_BY_CURRENCY[input.currency])
+    input.currency && PER_GUEST_BENCHMARKS_BY_CURRENCY[input.currency]
       ? PER_GUEST_BENCHMARKS_BY_CURRENCY[input.currency][input.eventType]
       : PER_GUEST_BENCHMARKS[input.eventType];
 
@@ -70,18 +69,24 @@ export function calculatePlanHealthScore(
 
   if (benchmarks) {
     if (perGuest >= benchmarks.recommendedComfort) {
-      reasons.push(`Per-guest allocation is comfortable, affording premium dining and guest hospitality.`);
+      reasons.push(
+        `Per-guest allocation is comfortable, affording premium dining and guest hospitality.`,
+      );
     } else if (perGuest >= benchmarks.standardMin) {
       perGuestAdequacy = 23;
       reasons.push(`Per-guest budget is balanced for standard market rates.`);
     } else if (perGuest >= benchmarks.criticalMin) {
       perGuestAdequacy = 14;
       reasons.push(`Per-guest funding is tight for standard vendor packages.`);
-      fixes.push('Consider narrowing the guest list or shifting to buffet/station dining to maintain quality.');
+      fixes.push(
+        'Consider narrowing the guest list or shifting to buffet/station dining to maintain quality.',
+      );
     } else {
       perGuestAdequacy = 4;
       reasons.push(`Per-guest funding is below minimal viable benchmark for this event type.`);
-      fixes.push(`Increase overall budget or trim guest count to reach at least minimum viable per-guest rate.`);
+      fixes.push(
+        `Increase overall budget or trim guest count to reach at least minimum viable per-guest rate.`,
+      );
     }
   }
 
@@ -97,13 +102,13 @@ export function calculatePlanHealthScore(
     const penalty = Math.min(25, overdueVendors.length * 7);
     vendorStatus = Math.max(0, 25 - penalty);
     reasons.push(
-      `${overdueVendors.length} key vendor${overdueVendors.length === 1 ? '' : 's'} past standard booking lead time.`
+      `${overdueVendors.length} key vendor${overdueVendors.length === 1 ? '' : 's'} past standard booking lead time.`,
     );
     fixes.push(
       `Fast-track contracts immediately for overdue partners: ${overdueVendors
         .slice(0, 2)
         .map((v) => v.title)
-        .join(', ')}.`
+        .join(', ')}.`,
     );
   }
 
@@ -113,11 +118,15 @@ export function calculatePlanHealthScore(
   if (timeline.isRushPlan) {
     timelineReadiness = 8;
     reasons.push('Event is under 14 days out; executing on high-urgency rush plan.');
-    fixes.push('Focus exclusively on the 48-hour critical path tasks: venue access, catering drop-off, and RSVPs.');
+    fixes.push(
+      'Focus exclusively on the 48-hour critical path tasks: venue access, catering drop-off, and RSVPs.',
+    );
   } else if (timeline.totalWeeks <= 4) {
     timelineReadiness = 15;
     reasons.push('Final countdown phase: 4 or fewer weeks remaining.');
-    fixes.push('Lock in finalized headcount and circulate the day-of run-of-show schedule to all vendors.');
+    fixes.push(
+      'Lock in finalized headcount and circulate the day-of run-of-show schedule to all vendors.',
+    );
   } else {
     reasons.push('Timeline milestones are well-paced with ample planning buffer.');
   }
@@ -125,7 +134,7 @@ export function calculatePlanHealthScore(
   // Final Composite Score calculation
   let totalScore = Math.min(
     100,
-    Math.max(0, Math.round(budgetBalance + perGuestAdequacy + vendorStatus + timelineReadiness))
+    Math.max(0, Math.round(budgetBalance + perGuestAdequacy + vendorStatus + timelineReadiness)),
   );
 
   let status: 'critical' | 'fair' | 'good' | 'excellent';

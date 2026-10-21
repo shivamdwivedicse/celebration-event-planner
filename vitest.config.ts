@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '.'),
+      '@': path.resolve(import.meta.dirname, '.'),
     },
   },
   test: {
@@ -17,7 +17,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['src/planner/**/*.ts'],
+      include: ['src/planner/**/*.ts', 'server/**/*.ts'],
+      exclude: ['server/index.ts'],
       thresholds: {
         lines: 90,
         functions: 90,

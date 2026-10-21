@@ -41,7 +41,9 @@ describe('React Component Suite', () => {
 
   it('displays validation error in EventForm when event name is too short', () => {
     const handleSubmit = vi.fn();
-    render(<EventForm currentPlan={{ ...samplePlan, eventName: '' }} onSubmitPlan={handleSubmit} />);
+    render(
+      <EventForm currentPlan={{ ...samplePlan, eventName: '' }} onSubmitPlan={handleSubmit} />,
+    );
 
     const submitBtn = screen.getByRole('button', { name: /Generate & Update Master Plan/i });
     fireEvent.click(submitBtn);
@@ -57,7 +59,7 @@ describe('React Component Suite', () => {
         budget={budget}
         guestCount={samplePlan.guestCount}
         currency={samplePlan.currency || 'USD'}
-      />
+      />,
     );
 
     expect(screen.getByText(/Total Budget/i)).toBeInTheDocument();

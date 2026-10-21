@@ -36,7 +36,8 @@ export function calculateBudgetPlan(input: EventPlanInput): BudgetBreakdown {
       if (percentages.catering) percentages.catering += Math.round(reduction * 0.5);
       if (percentages.decor) percentages.decor += Math.round(reduction * 0.3);
       if (percentages.contingency) {
-        percentages.contingency += reduction - (Math.round(reduction * 0.5) + Math.round(reduction * 0.3));
+        percentages.contingency +=
+          reduction - (Math.round(reduction * 0.5) + Math.round(reduction * 0.3));
       }
     }
   } else if (input.venueType === 'outdoor') {
@@ -76,7 +77,7 @@ export function calculateBudgetPlan(input: EventPlanInput): BudgetBreakdown {
   if (percentages.contingency) {
     percentages.contingency = Math.min(
       SYSTEM_LIMITS.MAX_CONTINGENCY_PERCENT - 2, // max 10%
-      Math.max(SYSTEM_LIMITS.MIN_CONTINGENCY_PERCENT, percentages.contingency)
+      Math.max(SYSTEM_LIMITS.MIN_CONTINGENCY_PERCENT, percentages.contingency),
     );
   }
 
@@ -111,13 +112,13 @@ export function calculateBudgetPlan(input: EventPlanInput): BudgetBreakdown {
   }
 
   // Discrepancy reconciliation: assign remaining units to contingency (or largest category)
-  let diff = totalBudget - runningAmountSum;
+  const diff = totalBudget - runningAmountSum;
   if (rawAmounts.contingency !== undefined) {
     rawAmounts.contingency += diff;
   } else {
     // If no contingency category, add to largest allocation
     const largestCat = categoryKeys.reduce((maxKey, k) =>
-      rawAmounts[k] > rawAmounts[maxKey] ? k : maxKey
+      rawAmounts[k] > rawAmounts[maxKey] ? k : maxKey,
     );
     rawAmounts[largestCat] += diff;
   }
@@ -157,12 +158,12 @@ function generateBudgetWarnings(
   input: EventPlanInput,
   perGuestCost: number,
   totalBudget: number,
-  guestCount: number
+  guestCount: number,
 ): BudgetWarning[] {
   const warnings: BudgetWarning[] = [];
   const currency = input.currency || 'USD';
   const benchmarks =
-    (input.currency && PER_GUEST_BENCHMARKS_BY_CURRENCY[input.currency])
+    input.currency && PER_GUEST_BENCHMARKS_BY_CURRENCY[input.currency]
       ? PER_GUEST_BENCHMARKS_BY_CURRENCY[input.currency][input.eventType]
       : PER_GUEST_BENCHMARKS[input.eventType];
 

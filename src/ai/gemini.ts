@@ -66,7 +66,7 @@ function createIdeasCacheKey(input: EventPlanInput): string {
  */
 export async function fetchPersonalizedIdeas(
   input: EventPlanInput,
-  forceRefresh = false
+  forceRefresh = false,
 ): Promise<IdeasResult> {
   const cacheKey = createIdeasCacheKey(input);
 
@@ -106,13 +106,15 @@ export async function fetchPersonalizedIdeas(
         const result: IdeasResult = {
           themeIdeas: data.themeIdeas.slice(0, 4),
           activities: Array.isArray(data.activities) ? data.activities.slice(0, 4) : [],
-          menuSuggestions: Array.isArray(data.menuSuggestions) ? data.menuSuggestions.slice(0, 3) : [],
+          menuSuggestions: Array.isArray(data.menuSuggestions)
+            ? data.menuSuggestions.slice(0, 3)
+            : [],
           source: data.source === 'ai' ? 'ai' : 'fallback',
         };
         ideasCache.set(cacheKey, result);
         return result;
       }
-    } catch (err: unknown) {
+    } catch {
       clearTimeout(timeoutId);
       // If last attempt, break to fallback
       if (attempts >= maxAttempts) {
@@ -134,7 +136,7 @@ export async function fetchPersonalizedIdeas(
  */
 export async function fetchChatResponse(
   message: string,
-  currentPlan: EventPlanInput
+  currentPlan: EventPlanInput,
 ): Promise<{ text: string; source: 'ai' | 'fallback' }> {
   const sanitizedMsg = message.trim().slice(0, SYSTEM_LIMITS.MAX_CHAT_INPUT_LENGTH);
   const cacheKey = `${currentPlan.eventType}-${currentPlan.budget}-${currentPlan.guestCount}:${sanitizedMsg}`;

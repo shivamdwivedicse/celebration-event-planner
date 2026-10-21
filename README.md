@@ -4,7 +4,7 @@ A GenAI-powered planning assistant that helps people organize **weddings, birthd
 
 Built for **PromptWars Virtual** (Hack2skill x Google for Developers).
 
-> Live demo: `<add deployed link>`  |  Demo video: `<add video link>`
+> Live demo: https://celebration-event-planner.onrender.com | Demo video: `<add video link>`
 
 ---
 
@@ -18,15 +18,15 @@ Planning an event means juggling a budget, dozens of vendors, tight deadlines an
 
 The key design decision: **numbers are deterministic code, creativity is AI.**
 
-| Concern | Handled by | Why |
-|---|---|---|
-| Budget split, per-guest cost, contingency | Code (`budget.ts`) | LLMs are unreliable at arithmetic; totals must match exactly |
-| Timeline, rush plan, day-of schedule | Code (`timeline.ts`) | Date math must be correct and testable |
-| Vendor lead times, overdue flags | Code (`vendors.ts`) | Rules based on the event date |
-| Plan Health Score (0-100) | Code (`healthScore.ts`) | Explainable, reproducible scoring |
-| Chat commands like "reduce budget 20%" | Code (`chatIntent.ts`) first | Parsed deterministically, then plan is recomputed |
-| Theme ideas, activities, menu, chat wording | Gemini (`gemini.ts`) | Where generative AI adds real value |
-| No key / timeout / API failure | Curated fallback (`fallback.ts`) | App never crashes and works offline |
+| Concern                                     | Handled by                       | Why                                                          |
+| ------------------------------------------- | -------------------------------- | ------------------------------------------------------------ |
+| Budget split, per-guest cost, contingency   | Code (`budget.ts`)               | LLMs are unreliable at arithmetic; totals must match exactly |
+| Timeline, rush plan, day-of schedule        | Code (`timeline.ts`)             | Date math must be correct and testable                       |
+| Vendor lead times, overdue flags            | Code (`vendors.ts`)              | Rules based on the event date                                |
+| Plan Health Score (0-100)                   | Code (`healthScore.ts`)          | Explainable, reproducible scoring                            |
+| Chat commands like "reduce budget 20%"      | Code (`chatIntent.ts`) first     | Parsed deterministically, then plan is recomputed            |
+| Theme ideas, activities, menu, chat wording | Gemini (`gemini.ts`)             | Where generative AI adds real value                          |
+| No key / timeout / API failure              | Curated fallback (`fallback.ts`) | App never crashes and works offline                          |
 
 Context-based decisions include: guest count and venue type (indoor / outdoor / home) shifting the budget split, user priorities (food, decor, photography...) reallocating money, rush mode when the event is under 14 days away, overdue vendor flags when lead time has already passed, and per-guest cost warnings with suggested fixes.
 
@@ -37,7 +37,7 @@ flowchart LR
     U[User] --> F[React Form + Validation]
     F --> P[Deterministic Engine<br/>budget, timeline, vendors,<br/>health score, scenarios]
     P --> UI[Plan Dashboard]
-    F -->|ideas / chat| S[Express Server<br/>server.ts]
+    F -->|ideas / chat| S[Express Server<br/>server/]
     S -->|API key stays server-side| G[Gemini API]
     S -.->|timeout / error / no key| FB[Curated Fallback]
     G --> UI
@@ -47,6 +47,7 @@ flowchart LR
 ```
 
 **Request flow**
+
 1. User fills the form; input is validated and sanitized.
 2. The deterministic engine builds the budget, timeline, vendor list, health score and scenarios instantly (no AI call).
 3. Ideas are requested through the Express proxy, which calls Gemini with a timeout, one retry and an LRU cache. On any failure the curated fallback is used, and the UI labels the source as `ai` or `fallback`.
@@ -100,20 +101,23 @@ npm start
 
 > The app works without a key: it simply uses the curated fallback ideas.
 
-## 6. Testing
+## 6. Testing, Linting & Formatting
 
 All tests live in the separate `tests/` folder and run **offline** (Gemini is mocked, no network calls).
 
 ```bash
-npm test            # run all tests
-npm run coverage    # with coverage report
+npm test              # run all 88 tests
+npm run coverage      # with coverage report (thresholds enforced)
+npm run lint          # TypeScript typecheck + ESLint (no `any`, no unused code)
+npm run format:check  # Prettier check (npm run format to fix)
 ```
 
-Test suites cover: budget splits (sum to 100, exact totals, edge cases), timeline math and rush plans, vendor overdue flags, input validation (negative, wrong type, XSS, bad dates), chat intent parsing, AI fallback behavior, health score, scenarios, spend tracker, `.ics` output, React components, and an end-to-end integration flow. GitHub Actions runs the suite on every push and pull request.
+Test suites cover: budget splits (sum to 100, exact totals, edge cases), timeline math and rush plans, vendor overdue flags, input validation (negative, wrong type, XSS, bad dates), chat intent parsing, AI fallback behavior, health score, scenarios, spend tracker, `.ics` output, React components, an end-to-end integration flow, and the **Express server** (health, validation errors, rate limiting with 429, security headers, request size limit, prompt-injection handling, Gemini model fallback, offline fallback). GitHub Actions runs lint, format check, coverage and build on every push and pull request.
 
 ## 7. Security, Accessibility & Efficiency
 
 **Security**
+
 - API key is read from environment variables and used only on the server; `.env` is git-ignored
 - Strict validation: types, ranges, enums, string lengths, real calendar dates
 - User and AI text rendered via React text nodes only (no `dangerouslySetInnerHTML`)
@@ -121,6 +125,7 @@ Test suites cover: budget splits (sum to 100, exact totals, edge cases), timelin
 - Friendly errors with no stack traces; pinned dependencies
 
 **Accessibility**
+
 - Semantic landmarks, skip-to-content link, visible labels on every input
 - Errors linked with `aria-describedby` and `role="alert"`; `aria-live` regions for results and chat
 - Full keyboard operation with visible focus, WCAG AA contrast
@@ -128,6 +133,7 @@ Test suites cover: budget splits (sum to 100, exact totals, edge cases), timelin
 - Screen-reader summary and table fallback for charts
 
 **Efficiency**
+
 - Deterministic parts never call the AI
 - LRU cache for identical AI requests, timeout and single retry, lazy client setup
 - `useMemo` for computed plans; small bundle (about 108 kB gzipped JS)
@@ -151,10 +157,17 @@ src/
   ai/            gemini.ts (timeout, retry, cache), fallback.ts (offline ideas)
   components/    form, budget, timeline, vendor checklist, ideas, chat, etc.
   styles/        app.css
-server.ts        Express proxy for Gemini (key stays server-side)
-tests/           all unit, component and integration tests
+server/
+  index.ts       entry point (Vite middleware in dev, static files in production)
+  app.ts         createApp(): Express app factory (testable, no listener)
+  config.ts      constants and limits
+  middleware.ts  rate limiter and security headers
+  gemini.ts      lazy Gemini client, model fallback, response schema
+  routes/        ai.ts (ideas, chat), health.ts
+  utils.ts       input clipping helpers
+tests/           all unit, component, integration and server tests
 .github/workflows/tests.yml
-.env.example
+eslint.config.js, .prettierrc, .editorconfig, .env.example
 ```
 
 ## 10. Screenshots

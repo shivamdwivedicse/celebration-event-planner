@@ -173,7 +173,8 @@ export const BASE_BUDGET_SPLITS: Record<EventType, CategoryDefinition[]> = {
       id: 'entertainment',
       name: 'Sound, Stage & AV',
       defaultPercentage: 15,
-      description: 'PA audio system, stage canopy, microphones, and community cultural performances',
+      description:
+        'PA audio system, stage canopy, microphones, and community cultural performances',
       color: '#d97706',
       priorityKey: 'entertainment',
     },
@@ -234,7 +235,7 @@ export const PER_GUEST_BENCHMARKS = PER_GUEST_BENCHMARKS_BY_CURRENCY.USD;
 export function formatCurrency(
   amount: number,
   currency: CurrencyCode = 'INR',
-  options?: { maximumFractionDigits?: number }
+  options?: { maximumFractionDigits?: number },
 ): string {
   const localeMap: Record<CurrencyCode, string> = {
     INR: 'en-IN',
@@ -287,7 +288,8 @@ export const INDIAN_WEDDING_FUNCTIONS: {
     tagline: 'Artisan henna design, folk songs & vibrant colors',
     recommendedTimeframe: 'Afternoon (Day 1)',
     typicalDurationHours: 4,
-    ritualFocus: 'Professional henna artists for bridal party, colorful cushions, live chaat stalls & bangles',
+    ritualFocus:
+      'Professional henna artists for bridal party, colorful cushions, live chaat stalls & bangles',
   },
   {
     id: 'Sangeet',
@@ -303,7 +305,8 @@ export const INDIAN_WEDDING_FUNCTIONS: {
     tagline: 'Sacred vows, Baraat procession & sacred fire rituals',
     recommendedTimeframe: 'Day 2 (Auspicious Mahurat)',
     typicalDurationHours: 6,
-    ritualFocus: 'Grand Baraat with brass band, Varmala stage, traditional Vedic Mandap & sacred 7 Pheras',
+    ritualFocus:
+      'Grand Baraat with brass band, Varmala stage, traditional Vedic Mandap & sacred 7 Pheras',
   },
   {
     id: 'Reception',
@@ -325,9 +328,16 @@ export const DEFAULT_PRESETS = [
       budget: 1800000,
       venueType: 'indoor' as const,
       currency: 'INR' as CurrencyCode,
-      selectedFunctions: ['Haldi', 'Mehendi', 'Sangeet', 'Wedding', 'Reception'] as IndianWeddingFunction[],
+      selectedFunctions: [
+        'Haldi',
+        'Mehendi',
+        'Sangeet',
+        'Wedding',
+        'Reception',
+      ] as IndianWeddingFunction[],
       priorities: ['food', 'photography', 'decor'] as Priority[],
-      notes: 'Grand multi-day celebration with royal heritage decor, live dhol, and traditional multi-cuisine feast.',
+      notes:
+        'Grand multi-day celebration with royal heritage decor, live dhol, and traditional multi-cuisine feast.',
     },
   },
   {
@@ -340,7 +350,8 @@ export const DEFAULT_PRESETS = [
       venueType: 'home' as const,
       currency: 'INR' as CurrencyCode,
       priorities: ['food', 'entertainment'] as Priority[],
-      notes: 'Cozy terrace celebration with artisanal street-food live counters, signature drinks, and acoustic tunes.',
+      notes:
+        'Cozy terrace celebration with artisanal street-food live counters, signature drinks, and acoustic tunes.',
     },
   },
   {
@@ -353,7 +364,8 @@ export const DEFAULT_PRESETS = [
       venueType: 'outdoor' as const,
       currency: 'INR' as CurrencyCode,
       priorities: ['entertainment', 'decor', 'venue'] as Priority[],
-      notes: 'Open neighborhood mela with cultural dance stage, diya lighting, local handicraft stalls, and sweets.',
+      notes:
+        'Open neighborhood mela with cultural dance stage, diya lighting, local handicraft stalls, and sweets.',
     },
   },
   {
@@ -366,7 +378,8 @@ export const DEFAULT_PRESETS = [
       venueType: 'indoor' as const,
       currency: 'USD' as CurrencyCode,
       priorities: ['food', 'photography', 'venue'] as Priority[],
-      notes: 'Garden-terrace atmosphere with timeless golden-hour photography and farm-to-table dinner.',
+      notes:
+        'Garden-terrace atmosphere with timeless golden-hour photography and farm-to-table dinner.',
     },
   },
 ];

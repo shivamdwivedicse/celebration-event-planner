@@ -229,7 +229,10 @@ const VENDOR_TEMPLATES: VendorTemplate[] = [
 /**
  * Generates an event-specific vendor checklist with dynamic overdue flags.
  */
-export function generateVendorChecklist(input: EventPlanInput, referenceDate: Date = new Date()): VendorItem[] {
+export function generateVendorChecklist(
+  input: EventPlanInput,
+  referenceDate: Date = new Date(),
+): VendorItem[] {
   const daysRemaining = calculateDaysRemaining(input.eventDate, referenceDate);
   const weeksRemaining = Math.max(0, Math.floor(daysRemaining / 7));
 

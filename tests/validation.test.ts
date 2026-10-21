@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { validateEventPlanInput, validateFutureDate, sanitizeString } from '../src/planner/validation.ts';
+import {
+  validateEventPlanInput,
+  validateFutureDate,
+  sanitizeString,
+} from '../src/planner/validation.ts';
 import { EventPlanInput } from '../src/types.ts';
 
 describe('Input Validation & Sanitization Engine', () => {
@@ -65,10 +69,10 @@ describe('Input Validation & Sanitization Engine', () => {
   it('rejects invalid enum values for eventType and venueType', () => {
     const res = validateEventPlanInput(
       {
-        eventType: 'corporate_meeting' as unknown as any,
-        venueType: 'spaceship' as unknown as any,
+        eventType: 'corporate_meeting' as never,
+        venueType: 'spaceship' as never,
       },
-      refDate
+      refDate,
     );
     expect(res.errors.eventType).toContain('valid event category');
     expect(res.errors.venueType).toContain('valid venue location');

@@ -53,11 +53,15 @@ describe('AI Service & Offline Fallback Engine', () => {
   it('generates tailored fallback ideas for birthdays and community festivals', () => {
     const bdayIdeas = getCuratedFallbackIdeas(sampleBirthday);
     expect(bdayIdeas.source).toBe('fallback');
-    expect(bdayIdeas.themeIdeas.some((t) => t.title.includes('Bistro') || t.title.includes('Arcade'))).toBe(true);
+    expect(
+      bdayIdeas.themeIdeas.some((t) => t.title.includes('Bistro') || t.title.includes('Arcade')),
+    ).toBe(true);
 
     const commIdeas = getCuratedFallbackIdeas(sampleCommunity);
     expect(commIdeas.source).toBe('fallback');
-    expect(commIdeas.activities.some((a) => a.title.includes('Mural') || a.title.includes('Makers'))).toBe(true);
+    expect(
+      commIdeas.activities.some((a) => a.title.includes('Mural') || a.title.includes('Makers')),
+    ).toBe(true);
   });
 
   it('seamlessly falls back to curated ideas when network/server returns 500 or is offline', async () => {
@@ -116,7 +120,10 @@ describe('AI Service & Offline Fallback Engine', () => {
   it('provides safe offline fallback for conversational chat when network fails', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Server unavailable')));
 
-    const chatReply = await fetchChatResponse('How many drinks should we plan for our wedding?', sampleWedding);
+    const chatReply = await fetchChatResponse(
+      'How many drinks should we plan for our wedding?',
+      sampleWedding,
+    );
     expect(chatReply.source).toBe('fallback');
     expect(chatReply.text).toContain('drinks per adult');
   });

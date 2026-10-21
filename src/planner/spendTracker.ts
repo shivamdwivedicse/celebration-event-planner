@@ -13,7 +13,7 @@ const STORAGE_KEY = 'celebration_actual_spend';
  */
 export function calculateSpendSummary(
   categories: BudgetCategory[],
-  actualSpends: Record<string, number>
+  actualSpends: Record<string, number>,
 ): SpendTrackerSummary {
   let totalPlanned = 0;
   let totalActual = 0;

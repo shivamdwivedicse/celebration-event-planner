@@ -4,7 +4,15 @@
  */
 
 import React, { useState } from 'react';
-import { AlertTriangle, BarChart3, DollarSign, Info, PieChart, ShieldCheck, Users } from 'lucide-react';
+import {
+  AlertTriangle,
+  BarChart3,
+  DollarSign,
+  Info,
+  PieChart,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
 import { BudgetBreakdown, CurrencyCode } from '../types.ts';
 import { formatCurrency } from '../config.ts';
 import { BudgetDonutChart } from './BudgetDonutChart.tsx';
@@ -30,7 +38,8 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
             Budget Allocation & Contingency
           </h2>
           <p className="card-subtitle">
-            Rule-based distribution tailored to your guest volume, venue logistics, and prioritized categories.
+            Rule-based distribution tailored to your guest volume, venue logistics, and prioritized
+            categories.
           </p>
         </div>
 
@@ -47,7 +56,9 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
             <Users size={16} aria-hidden="true" className="kpi-icon text-emerald" />
             <div>
               <span className="kpi-label">Per-Guest Cost</span>
-              <strong className="kpi-value">{formatCurrency(budget.perGuestCost, currency, { maximumFractionDigits: 1 })}</strong>
+              <strong className="kpi-value">
+                {formatCurrency(budget.perGuestCost, currency, { maximumFractionDigits: 1 })}
+              </strong>
             </div>
           </div>
           <div className="kpi-pill">
@@ -55,7 +66,8 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
             <div>
               <span className="kpi-label">Contingency Buffer</span>
               <strong className="kpi-value">
-                {formatCurrency(budget.contingencyReserve, currency)} ({budget.contingencyPercentage}%)
+                {formatCurrency(budget.contingencyReserve, currency)} (
+                {budget.contingencyPercentage}%)
               </strong>
             </div>
           </div>
@@ -64,13 +76,13 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
 
       {/* Warnings & Suggestions Banner */}
       {budget.warnings.length > 0 && (
-        <div className="budget-warnings-container" role="region" aria-label="Budget Warnings & Suggestions">
+        <div
+          className="budget-warnings-container"
+          role="region"
+          aria-label="Budget Warnings & Suggestions"
+        >
           {budget.warnings.map((w) => (
-            <div
-              key={w.id}
-              className={`warning-item warning-${w.severity}`}
-              role="alert"
-            >
+            <div key={w.id} className={`warning-item warning-${w.severity}`} role="alert">
               <div className="warning-icon-col">
                 {w.severity === 'critical' || w.severity === 'warning' ? (
                   <AlertTriangle className="warning-icon" aria-hidden="true" size={18} />
@@ -81,7 +93,11 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
               <div className="warning-body">
                 <p className="warning-msg">
                   <strong className="warning-tag">
-                    {w.severity === 'critical' ? 'CRITICAL RISK:' : w.severity === 'warning' ? 'ADVISORY:' : 'NOTE:'}
+                    {w.severity === 'critical'
+                      ? 'CRITICAL RISK:'
+                      : w.severity === 'warning'
+                        ? 'ADVISORY:'
+                        : 'NOTE:'}
                   </strong>{' '}
                   {w.message}
                 </p>
@@ -171,15 +187,22 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
           <thead>
             <tr>
               <th scope="col">Category</th>
-              <th scope="col" className="text-right">Share (%)</th>
-              <th scope="col" className="text-right">Allocation ({currency})</th>
-              <th scope="col" className="text-right">Est. Per Attendee</th>
+              <th scope="col" className="text-right">
+                Share (%)
+              </th>
+              <th scope="col" className="text-right">
+                Allocation ({currency})
+              </th>
+              <th scope="col" className="text-right">
+                Est. Per Attendee
+              </th>
               <th scope="col">Scope & Logistics Guidance</th>
             </tr>
           </thead>
           <tbody>
             {budget.categories.map((cat) => {
-              const perGuestAllocation = Math.round((cat.amount / Math.max(1, guestCount)) * 100) / 100;
+              const perGuestAllocation =
+                Math.round((cat.amount / Math.max(1, guestCount)) * 100) / 100;
               return (
                 <tr key={cat.id}>
                   <th scope="row" className="category-cell">
@@ -191,8 +214,12 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
                     <span className="category-title">{cat.name}</span>
                   </th>
                   <td className="text-right font-medium">{cat.percentage}%</td>
-                  <td className="text-right font-semibold">{formatCurrency(cat.amount, currency)}</td>
-                  <td className="text-right text-muted">{formatCurrency(perGuestAllocation, currency, { maximumFractionDigits: 1 })}</td>
+                  <td className="text-right font-semibold">
+                    {formatCurrency(cat.amount, currency)}
+                  </td>
+                  <td className="text-right text-muted">
+                    {formatCurrency(perGuestAllocation, currency, { maximumFractionDigits: 1 })}
+                  </td>
                   <td className="text-muted text-sm">{cat.description}</td>
                 </tr>
               );
@@ -202,9 +229,15 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
             <tr className="table-total-row">
               <th scope="row">Grand Total (Exact 100%)</th>
               <td className="text-right font-bold">100.0%</td>
-              <td className="text-right font-bold">{formatCurrency(budget.totalBudget, currency)}</td>
-              <td className="text-right font-bold">{formatCurrency(budget.perGuestCost, currency, { maximumFractionDigits: 1 })}</td>
-              <td className="text-sm">Verified down to the dollar/rupee with contingency reconciliation</td>
+              <td className="text-right font-bold">
+                {formatCurrency(budget.totalBudget, currency)}
+              </td>
+              <td className="text-right font-bold">
+                {formatCurrency(budget.perGuestCost, currency, { maximumFractionDigits: 1 })}
+              </td>
+              <td className="text-sm">
+                Verified down to the dollar/rupee with contingency reconciliation
+              </td>
             </tr>
           </tfoot>
         </table>

@@ -15,7 +15,7 @@ import {
   Sun,
   Type as TypeIcon,
 } from 'lucide-react';
-import { CurrencyCode, EventPlanInput, IdeasResult } from './types.ts';
+import { EventPlanInput, IdeasResult } from './types.ts';
 import { calculateBudgetPlan } from './planner/budget.ts';
 import { generateTimelinePlan, calculateDaysRemaining } from './planner/timeline.ts';
 import { generateVendorChecklist } from './planner/vendors.ts';
@@ -50,7 +50,8 @@ const INITIAL_PLAN: EventPlanInput = {
   currency: 'INR',
   selectedFunctions: ['Haldi', 'Mehendi', 'Sangeet', 'Wedding', 'Reception'],
   priorities: ['food', 'photography', 'decor'],
-  notes: 'Grand multi-day celebration featuring heritage marigold decor, live dhol, and traditional royal multi-cuisine feast.',
+  notes:
+    'Grand multi-day celebration featuring heritage marigold decor, live dhol, and traditional royal multi-cuisine feast.',
 };
 
 export default function App() {
@@ -72,7 +73,10 @@ export default function App() {
 
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>(() => {
     try {
-      return (localStorage.getItem('celebration_font_size') as any) || 'normal';
+      return (
+        (localStorage.getItem('celebration_font_size') as 'normal' | 'large' | 'xlarge' | null) ||
+        'normal'
+      );
     } catch {
       return 'normal';
     }
@@ -95,21 +99,27 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
     try {
       localStorage.setItem('celebration_theme', theme);
-    } catch {}
+    } catch {
+      // localStorage unavailable (private mode / blocked): safe to ignore
+    }
   }, [theme]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-font-size', fontSize);
     try {
       localStorage.setItem('celebration_font_size', fontSize);
-    } catch {}
+    } catch {
+      // localStorage unavailable (private mode / blocked): safe to ignore
+    }
   }, [fontSize]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-contrast', highContrast ? 'high' : 'normal');
     try {
       localStorage.setItem('celebration_contrast', highContrast ? 'high' : 'normal');
-    } catch {}
+    } catch {
+      // localStorage unavailable (private mode / blocked): safe to ignore
+    }
   }, [highContrast]);
 
   // Deterministic computations with useMemo to maximize efficiency
@@ -165,7 +175,9 @@ export default function App() {
       for (const v of vendorList) {
         if (vendorMap[v.id]) completed++;
       }
-    } catch {}
+    } catch {
+      // localStorage unavailable (private mode / blocked): safe to ignore
+    }
 
     // Timeline tasks
     if (timelinePlan) {
@@ -178,7 +190,9 @@ export default function App() {
             if (taskMap[task.id]) completed++;
           }
         }
-      } catch {}
+      } catch {
+        // localStorage unavailable (private mode / blocked): safe to ignore
+      }
     }
 
     setCompletedTaskCount(completed);
@@ -345,9 +359,17 @@ export default function App() {
         )}
 
         {/* Overview Strip: Countdown, Progress Ring & Confetti when 100% */}
-        <div className="dashboard-strip" role="region" aria-label="Event Countdown and Readiness Overview">
+        <div
+          className="dashboard-strip"
+          role="region"
+          aria-label="Event Countdown and Readiness Overview"
+        >
           <div className="dashboard-left">
-            <div className="countdown-box" role="status" aria-label={`Event countdown: ${daysUntilEvent} days until celebration`}>
+            <div
+              className="countdown-box"
+              role="status"
+              aria-label={`Event countdown: ${daysUntilEvent} days until celebration`}
+            >
               <Calendar size={18} aria-hidden="true" />
               <span>
                 {daysUntilEvent > 0
@@ -381,7 +403,9 @@ export default function App() {
               </svg>
               <div className="progress-ring-text">
                 <span className="progress-pct">{completionPct}% Prepared</span>
-                <span className="progress-label">{completedTaskCount} of {totalTaskCount} milestones checked</span>
+                <span className="progress-label">
+                  {completedTaskCount} of {totalTaskCount} milestones checked
+                </span>
               </div>
             </div>
           </div>
@@ -429,10 +453,7 @@ export default function App() {
 
         {/* 6. Timeline & Execution Roadmap Section */}
         {timelinePlan && (
-          <TimelineSection
-            timeline={timelinePlan}
-            eventDate={currentPlan.eventDate}
-          />
+          <TimelineSection timeline={timelinePlan} eventDate={currentPlan.eventDate} />
         )}
 
         {/* 7. Vendor Checklist Section */}
@@ -446,20 +467,19 @@ export default function App() {
         />
 
         {/* 9. Interactive Assistant Chat (Supports both Intent commands and Questions) */}
-        <ChatBox
-          currentPlan={currentPlan}
-          onApplyPlanUpdate={handleUpdatePlan}
-        />
+        <ChatBox currentPlan={currentPlan} onApplyPlanUpdate={handleUpdatePlan} />
       </main>
 
       {/* Semantic Footer Landmark */}
       <footer className="app-footer" role="contentinfo">
         <div className="footer-container">
           <p>
-            Celebration & Event Planner &bull; Deterministic Rules Engine + Gemini Flash Intelligence &bull; Built with accessibility & privacy in mind.
+            Celebration & Event Planner &bull; Deterministic Rules Engine + Gemini Flash
+            Intelligence &bull; Built with accessibility & privacy in mind.
           </p>
           <p className="text-sm text-muted mt-3">
-            All budget allocations sum to 100% exactly. Vendor lead times are calculated relative to event date.
+            All budget allocations sum to 100% exactly. Vendor lead times are calculated relative to
+            event date.
           </p>
         </div>
       </footer>
